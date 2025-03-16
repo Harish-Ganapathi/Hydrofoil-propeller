@@ -1,0 +1,113 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  dev
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    
+    {
+        solver          GAMG;
+        smoother        DICGaussSeidel;
+        tolerance       1e-6;
+        relTol          0.01;
+        cacheAgglomeration no;
+        minIter           3;
+        //maxIter         50;
+    } 
+    /*
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-6;
+        relTol          0;
+        minIter         3;
+    }    */
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    "pcorr.*"
+    
+    {
+        $p;
+        tolerance       1e-2;
+        relTol          0;
+    }
+    /*
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-6;
+        relTol          0;
+        minIter         3;
+    }  */
+
+    MeshPhi
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-2;
+        relTol          0;
+    }
+
+    "(U|k|omega)"
+    
+    {
+        //type            coupled;
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-6;
+        relTol          0;
+    }  
+    /*
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-8;
+        relTol          0;
+    } */
+
+    //"(U|k|epsilon)Final"
+    "(U|k|omega)Final"
+    {
+        $U;
+        relTol          0;
+    }
+}
+
+PIMPLE
+{
+    momentumPredictor   yes;
+    correctPhi          yes;
+    correctMeshPhi      yes;
+    nOuterCorrectors    3;
+    nCorrectors         3;
+    nNonOrthogonalCorrectors 4;
+}
+
+relaxationFactors
+{
+    "(U|k|omega).*"   1;
+}
+
+cache
+{
+    grad(U);
+}
+
+// ************************************************************************* //

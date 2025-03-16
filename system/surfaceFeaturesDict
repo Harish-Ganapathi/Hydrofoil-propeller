@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |				
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12                                  	
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      surfaceFeatureExtractDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+edges1
+{
+//surfaces ("surfacemesh.stl" "onshape_all.stl" "trimesh.stl");
+surfaces ("body.stl" "propeller.stl" "box.stl" "inner_volume.stl" "inner_volume_big.stl");
+//"propeller.stl" "inner_volume.stl"
+includedAngle   120;	//170?
+
+subsetFeatures
+{
+nonManifoldEdges       yes;
+
+openEdges       yes;
+}
+
+writeObj                yes;
+}
+
+/*
+edges2
+{
+surfaces ("s1.stl" "s2.stl" "s3.stl" "s4.stl" "s5.stl" "s6.stl" "s7.stl" "s8.stl" "s9.stl" "s10.stl" "s11.stl" "s12.stl" "s13.stl" "s14.stl" "s15.stl" "s16.stl" "s17.stl");
+
+includedAngle   150;	
+
+subsetFeatures
+{
+nonManifoldEdges       yes;
+
+openEdges       yes;
+}
+
+writeObj                yes;
+}
+*/
+// ************************************************************************* //
