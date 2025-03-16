@@ -1,0 +1,85 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |				
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12                                   	
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    object      omega;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 -1 0 0 0 0];
+
+internalField   uniform 0.1;
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+
+//You can also use the nonCouple group created with createBaffles
+    "(NCC1|NCC2)"
+    {
+        type            zeroGradient;
+        //value           $internalField;
+    }
+    
+    "(propeller|body|front_shape)"
+    {
+        type            omegaWallFunction;
+        value           $internalField;
+    }
+
+
+   
+    inlet
+    {
+        //type            zeroGradient;
+
+    	type		fixedValue;
+    	value		$internalField;
+
+        //type            omegaWallFunction;
+        //value           $internalField;
+    }
+
+    outlet
+    {
+        //type            zeroGradient;
+
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+        }
+
+
+
+    	//type		fixedValue;
+    	//value		$internalField;
+
+        //type            omegaWallFunction;
+        //value           $internalField;
+    }
+
+    "(wall1|wall2|wall3|wall4)"
+    {
+        //type            zeroGradient;
+
+    	//type		fixedValue;
+    	//value		$internalField;
+        type                symmetryPlane;
+        value               uniform 0;
+
+        //type            omegaWallFunction;
+        //value           $internalField;
+    }
+
+
+
+}
+
+// ************************************************************************* //
